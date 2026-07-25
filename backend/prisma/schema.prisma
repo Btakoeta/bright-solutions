@@ -1,0 +1,236 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String @id @default(cuid())
+  email              String @unique
+  password           String
+  firstName          String
+  lastName           String
+  phone              String?
+  userType           UserType
+  address            String?
+  city               String?
+  state              String?
+  zipCode            String?
+  latitude           Float?
+  longitude          Float?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  organization       Organization?
+  serviceSubscriptions ServiceSubscription[]
+  wasteRecords       WasteRecord[]
+  truckLocations     TruckLocation[] @relation("driver")
+  notifications      Notification[]
+}
+
+enum UserType {
+  INDIVIDUAL
+  ORGANIZATION
+  MUNICIPALITY
+  STATE
+  COMMUNITY
+}
+
+model Organization {
+  id                 String @id @default(cuid())
+  name               String
+  userId             String @unique
+  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationType   String
+  taxId              String?
+  serviceAreas       String[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  trucks             Truck[]
+  serviceSubscriptions ServiceSubscription[]
+  wasteRecords       WasteRecord[]
+}
+
+model Truck {
+  id                 String @id @default(cuid())
+  organizationId     String
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  licensePlate       String @unique
+  capacity           Int
+  truckType          TruckType
+  fuelType           String
+  currentLocation    String?
+  status             TruckStatus @default(IDLE)
+  lastMaintenanceDate DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  locations          TruckLocation[]
+  routes             Route[]
+  collections        ServiceCollection[]
+}
+
+enum TruckType {
+  STANDARD
+  COMPACTOR
+  FLATBED
+  RECYCLING
+  HAZMAT
+}
+
+enum TruckStatus {
+  IDLE
+  ACTIVE
+  IN_MAINTENANCE
+  OFF_DUTY
+}
+
+model TruckLocation {
+  id                 String @id @default(cuid())
+  truckId            String
+  truck              Truck @relation(fields: [truckId], references: [id], onDelete: Cascade)
+  driverId           String
+  driver             User @relation("driver", fields: [driverId], references: [id])
+  latitude           Float
+  longitude          Float
+  timestamp          DateTime @default(now())
+  speed              Float?
+  heading            Float?
+
+  @@index([truckId])
+  @@index([driverId])
+}
+
+model Route {
+  id                 String @id @default(cuid())
+  truckId            String
+  truck              Truck @relation(fields: [truckId], references: [id], onDelete: Cascade)
+  name               String
+  startAddress       String
+  endAddress         String
+  scheduledDate      DateTime
+  status             RouteStatus @default(PLANNED)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  collections       ServiceCollection[]
+
+  @@index([truckId])
+}
+
+enum RouteStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model ServiceSubscription {
+  id                 String @id @default(cuid())
+  userId             String
+  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId     String?
+  organization       Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  serviceType        ServiceType
+  frequency          ServiceFrequency
+  startDate          DateTime
+  endDate            DateTime?
+  status             SubscriptionStatus @default(ACTIVE)
+  containerSize      Int
+  price              Float
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  collections       ServiceCollection[]
+
+  @@index([userId])
+}
+
+enum ServiceType {
+  TRASH
+  RECYCLING
+  COMPOSTING
+  BULKY_ITEMS
+  HAZARDOUS_WASTE
+}
+
+enum ServiceFrequency {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+}
+
+model ServiceCollection {
+  id                 String @id @default(cuid())
+  subscriptionId     String
+  subscription       ServiceSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  truckId            String?
+  truck              Truck? @relation(fields: [truckId], references: [id])
+  routeId            String?
+  route              Route? @relation(fields: [routeId], references: [id])
+  collectedAt        DateTime @default(now())
+  weight             Float?
+  status             CollectionStatus @default(COMPLETED)
+  notes              String?
+  createdAt          DateTime @default(now())
+
+  @@index([subscriptionId])
+  @@index([truckId])
+}
+
+enum CollectionStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+  RESCHEDULED
+}
+
+model WasteRecord {
+  id                 String @id @default(cuid())
+  userId             String?
+  user               User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId     String?
+  organization       Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  wasteType          ServiceType
+  weight             Float
+  volume             Float?
+  date               DateTime @default(now())
+  notes              String?
+  createdAt          DateTime @default(now())
+
+  @@index([userId])
+  @@index([organizationId])
+}
+
+model Notification {
+  id                 String @id @default(cuid())
+  userId             String
+  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title              String
+  message            String
+  type               NotificationType
+  read               Boolean @default(false)
+  createdAt          DateTime @default(now())
+
+  @@index([userId])
+}
+
+enum NotificationType {
+  COLLECTION_SCHEDULED
+  COLLECTION_COMPLETED
+  TRUCK_NEARBY
+  PAYMENT_DUE
+  SERVICE_ALERT
+  INFO
+}

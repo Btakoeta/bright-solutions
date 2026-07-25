@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: bright-solutions-db
+    environment:
+      POSTGRES_USER: bright_user
+      POSTGRES_PASSWORD: bright_password
+      POSTGRES_DB: bright_solutions
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bright_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bright-solutions-api
+    environment:
+      DATABASE_URL: "postgresql://bright_user:bright_password@postgres:5432/bright_solutions"
+      JWT_SECRET: "your-secret-key-change-this-in-production"
+      PORT: 3000
+      NODE_ENV: production
+      FRONTEND_URL: "http://localhost:5173"
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bright-solutions-web
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: "http://localhost:3000"
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: bright-solutions-network
