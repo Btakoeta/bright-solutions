@@ -209,7 +209,7 @@ export default function Register() {
                 <motion.button
                   type="button"
                   className="w-full py-3 px-4 border border-gray-200 rounded-lg font-medium text-gray-700 transition flex items-center justify-center gap-3 group hover:bg-[#F8FAFC] hover:border-bright-green/30"
-                  disabled={loading}
+                  disabled={submitState !== 'idle'}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -236,7 +236,7 @@ export default function Register() {
                 <motion.button
                   type="button"
                   className="w-full py-3 px-4 border border-gray-200 rounded-lg font-medium text-gray-700 transition flex items-center justify-center gap-3 group hover:bg-[#F8FAFC] hover:border-bright-green/30"
-                  disabled={loading}
+                  disabled={submitState !== 'idle'}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -276,7 +276,7 @@ export default function Register() {
                       className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-bright-green focus:border-transparent transition bg-[#FAFBFC] hover:bg-white shadow-inner"
                       style={{ boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)' }}
                       required
-                      disabled={loading}
+                      disabled={submitState !== 'idle'}
                     />
                   </div>
 
@@ -351,7 +351,7 @@ export default function Register() {
                   checked={agreeTerms}
                   onChange={(e) => setAgreeTerms(e.target.checked)}
                   className="mt-1 w-5 h-5 rounded cursor-pointer accent-bright-green"
-                  disabled={loading}
+                  disabled={submitState !== 'idle'}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 />
@@ -370,13 +370,13 @@ export default function Register() {
               {/* Submit Button with Progress Bar */}
               <motion.button
                 type="submit"
-                disabled={!isFormValid || loading}
+                disabled={!isFormValid || submitState !== 'idle'}
                 className="w-full rounded-lg font-bold text-white transition disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65 }}
-                whileHover={!isFormValid || loading ? {} : { y: -2 }}
-                whileTap={!isFormValid || loading ? {} : { scale: 0.98 }}
+                whileHover={!isFormValid || submitState !== 'idle' ? {} : { y: -2 }}
+                whileTap={!isFormValid || submitState !== 'idle' ? {} : { scale: 0.98 }}
                 style={{
                   background: isFormValid && submitState === 'idle'
                     ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
