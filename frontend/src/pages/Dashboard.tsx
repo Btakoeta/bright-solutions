@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Package, Trash2, MapPin, TrendingUp, AlertCircle } from 'lucide-react'
+import { Package, Trash2, TrendingUp, AlertCircle } from 'lucide-react'
 import api from '../services/api'
-import { useAuthStore } from '../store/authStore'
 import { Link } from 'react-router-dom'
 
 interface User {
@@ -24,7 +23,6 @@ export default function Dashboard() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [stats, setStats] = useState({ totalWeight: 0, recordCount: 0 })
   const [loading, setLoading] = useState(true)
-  const { user: authUser } = useAuthStore()
 
   useEffect(() => {
     const fetchData = async () => {

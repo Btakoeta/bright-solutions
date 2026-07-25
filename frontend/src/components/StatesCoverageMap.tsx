@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, CheckCircle } from 'lucide-react'
 import { MapContainer, TileLayer, Popup, CircleMarker } from 'react-leaflet'
-import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 const operatingStates = [

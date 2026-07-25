@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, ArrowRight, Shield, Lock, Zap, Eye, EyeOff } from 'lucide-react'
-import CyclingDashboardPreview from '../components/CyclingDashboardPreview'
+import { CheckCircle, ArrowRight, Shield, Lock, Zap } from 'lucide-react'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -13,22 +12,9 @@ export default function Login() {
   const [capsLockOn, setCapsLockOn] = useState(false)
   const [showMagicLink, setShowMagicLink] = useState(false)
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const [submitState, setSubmitState] = useState<'idle' | 'signing-in' | 'checking' | 'success'>('idle')
-  const [userGreeting, setUserGreeting] = useState<string | null>(null)
   const { login } = useAuthStore()
   const navigate = useNavigate()
-
-  // Extract user's name from email for greeting
-  useEffect(() => {
-    if (email && email.includes('@')) {
-      const name = email.split('@')[0]
-      const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1)
-      setUserGreeting(capitalizedName)
-    } else {
-      setUserGreeting(null)
-    }
-  }, [email])
 
   // Detect caps lock
   const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -247,6 +233,8 @@ export default function Login() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  Google
+                </motion.button>
                   <svg className="w-5 h-5 group-hover:scale-110 transition" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                     <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -261,6 +249,8 @@ export default function Login() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  Google
+                </motion.button>
                   <svg className="w-5 h-5 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.05 13.5c0-1.8-1.46-3.26-3.26-3.26-1.8 0-3.26 1.46-3.26 3.26s1.46 3.26 3.26 3.26c1.8 0 3.26-1.46 3.26-3.26zm-5.1 0c0-1.01.82-1.84 1.84-1.84 1.01 0 1.84.82 1.84 1.84s-.82 1.84-1.84 1.84c-1.01 0-1.84-.82-1.84-1.84z" />
                   </svg>
@@ -387,18 +377,18 @@ export default function Login() {
               {/* Sign In Button */}
               <motion.button
                 type="submit"
-                disabled={!email || !password || loading}
+                disabled={!email || !password || submitState !== 'idle'}
                 className="w-full rounded-lg font-bold text-white transition disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                whileHover={!loading && email && password ? { y: -2 } : {}}
-                whileTap={!loading && email && password ? { scale: 0.98 } : {}}
+                whileHover={submitState === 'idle' && email && password ? { y: -2 } : {}}
+                whileTap={submitState === 'idle' && email && password ? { scale: 0.98 } : {}}
                 style={{
-                  background: email && password && !loading
+                  background: email && password && submitState === 'idle'
                     ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
                     : '#d1d5db',
-                  boxShadow: email && password && !loading
+                  boxShadow: email && password && submitState === 'idle'
                     ? '0 10px 30px rgba(16, 185, 129, 0.4)'
                     : '0 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
@@ -413,7 +403,7 @@ export default function Login() {
                       className="flex items-center justify-center gap-2 relative z-10 py-3"
                     >
                       Sign In
-                      <motion.div animate={email && password && !loading ? { x: [0, 4, 0] } : {}} transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}>
+                      <motion.div animate={email && password ? { x: [0, 4, 0] } : {}} transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}>
                         <ArrowRight className="w-4 h-4" />
                       </motion.div>
                     </motion.div>
@@ -503,7 +493,7 @@ export default function Login() {
         </motion.div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .wave {
           display: inline-block;
           animation: wave 2s ease-in-out infinite;

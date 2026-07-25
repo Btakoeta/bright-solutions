@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { TrendingUp, MapPin, Zap } from 'lucide-react'
+import { TrendingUp } from 'lucide-react'
 
 export default function HeroVisualization() {
   const containerVariants = {
@@ -18,7 +18,7 @@ export default function HeroVisualization() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8 },
     },
   }
 
@@ -27,16 +27,7 @@ export default function HeroVisualization() {
     visible: {
       opacity: 1,
       y: [0, -15, 0],
-      transition: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-    },
-  }
-
-  const slideVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 4, repeat: Infinity },
     },
   }
 

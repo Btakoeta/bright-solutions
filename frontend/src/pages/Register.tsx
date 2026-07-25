@@ -17,7 +17,6 @@ export default function Register() {
   const [agreeTerms, setAgreeTerms] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const [submitState, setSubmitState] = useState<'idle' | 'creating' | 'success'>('idle')
   const [showNotification, setShowNotification] = useState(false)
   const { register } = useAuthStore()
@@ -379,17 +378,17 @@ export default function Register() {
                 whileHover={!isFormValid || loading ? {} : { y: -2 }}
                 whileTap={!isFormValid || loading ? {} : { scale: 0.98 }}
                 style={{
-                  background: isFormValid && !loading
+                  background: isFormValid && submitState === 'idle'
                     ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
                     : '#d1d5db',
-                  boxShadow: isFormValid && !loading
+                  boxShadow: isFormValid && submitState === 'idle'
                     ? '0 10px 30px rgba(16, 185, 129, 0.4)'
                     : '0 4px 12px rgba(0, 0, 0, 0.1)',
                   padding: submitState === 'creating' ? '8px 16px' : '12px 16px',
                 }}
               >
                 {/* Gradient Overlay on Hover */}
-                {isFormValid && !loading && (
+                {isFormValid && submitState === 'idle' && (
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-bright-green via-emerald-500 to-green-600 opacity-0 group-hover:opacity-20 transition"
                     whileHover={{ x: ['100%', '-100%'] }}
@@ -408,7 +407,7 @@ export default function Register() {
                     >
                       Create Account
                       <motion.div
-                        animate={isFormValid && !loading ? { x: [0, 4, 0] } : {}}
+                        animate={isFormValid && submitState === 'idle' ? { x: [0, 4, 0] } : {}}
                         transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}
                       >
                         <ArrowRight className="w-4 h-4" />

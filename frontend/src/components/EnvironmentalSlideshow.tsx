@@ -86,19 +86,6 @@ export default function EnvironmentalSlideshow() {
     setAutoPlay(false)
   }
 
-  const getThemeColor = (theme: string) => {
-    switch (theme) {
-      case 'waste':
-        return 'from-amber-600 to-orange-600'
-      case 'energy':
-        return 'from-yellow-500 to-orange-500'
-      case 'sustainability':
-        return 'from-bright-green to-emerald-600'
-      default:
-        return 'from-bright-green to-green-600'
-    }
-  }
-
   return (
     <div className="relative w-full h-full rounded-3xl overflow-hidden bg-black">
       <AnimatePresence mode="wait">

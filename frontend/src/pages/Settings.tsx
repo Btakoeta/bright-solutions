@@ -16,7 +16,6 @@ interface UserProfile {
 }
 
 export default function Settings() {
-  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [formData, setFormData] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [saved, setSaved] = useState(false)
@@ -28,7 +27,6 @@ export default function Settings() {
   const fetchProfile = async () => {
     try {
       const res = await api.get('/users/me')
-      setProfile(res.data)
       setFormData(res.data)
     } catch (error) {
       console.error('Failed to fetch profile:', error)
