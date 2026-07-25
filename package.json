@@ -7,6 +7,7 @@
     "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install",
     "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\"",
     "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "build:frontend": "cd frontend && npm install && npm run build",
     "start": "concurrently \"cd frontend && npm run preview\" \"cd backend && npm start\"",
     "init": "bash scripts/init.sh",
     "init:db": "cd backend && npx prisma migrate dev && npx prisma studio"
