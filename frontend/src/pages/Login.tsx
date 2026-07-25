@@ -233,8 +233,6 @@ export default function Login() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Google
-                </motion.button>
                   <svg className="w-5 h-5 group-hover:scale-110 transition" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                     <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -249,8 +247,6 @@ export default function Login() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Google
-                </motion.button>
                   <svg className="w-5 h-5 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.05 13.5c0-1.8-1.46-3.26-3.26-3.26-1.8 0-3.26 1.46-3.26 3.26s1.46 3.26 3.26 3.26c1.8 0 3.26-1.46 3.26-3.26zm-5.1 0c0-1.01.82-1.84 1.84-1.84 1.01 0 1.84.82 1.84 1.84s-.82 1.84-1.84 1.84c-1.01 0-1.84-.82-1.84-1.84z" />
                   </svg>
@@ -296,7 +292,6 @@ export default function Login() {
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-bright-green focus:border-transparent transition bg-[#FAFBFC] hover:bg-white"
                   style={{ boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)' }}
                   required
-                  disabled={loading}
                 />
               </motion.div>
 
