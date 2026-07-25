@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, ArrowRight, Shield, Lock, Zap } from 'lucide-react'
+import { CheckCircle, ArrowRight, Shield, Lock, Zap, Eye, EyeOff } from 'lucide-react'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -313,7 +313,6 @@ export default function Login() {
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-bright-green focus:border-transparent transition bg-[#FAFBFC] hover:bg-white pr-12"
                     style={{ boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)' }}
                     required
-                    disabled={loading}
                   />
                   <motion.button
                     type="button"
@@ -417,7 +416,7 @@ export default function Login() {
                           className="h-full bg-white rounded-full"
                           initial={{ scaleX: 0 }}
                           animate={{ scaleX: 1 }}
-                          transition={{ duration: 1, ease: 'easeInOut' }}
+                          transition={{ duration: 1 }}
                           style={{ originX: 0 }}
                         />
                       </motion.div>
