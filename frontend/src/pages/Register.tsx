@@ -90,10 +90,17 @@ export default function Register() {
     setSubmitState('creating')
 
     try {
+      const userTypeMap: Record<string, string> = {
+        individual: 'INDIVIDUAL',
+        business: 'ORGANIZATION',
+        community: 'COMMUNITY',
+        government: 'MUNICIPALITY',
+      }
+
       await register({
         email: emailSuggestion || email,
         password,
-        userType: accountType,
+        userType: userTypeMap[accountType] || accountType.toUpperCase(),
         firstName: email.split('@')[0],
         lastName: '',
       })
