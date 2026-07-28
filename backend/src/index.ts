@@ -15,12 +15,14 @@ import { authenticate } from './middleware/auth.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://bright-solutions-seven.vercel.app',
+  process.env.FRONTEND_URL
+].filter((origin): origin is string => Boolean(origin));
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://bright-solutions-seven.vercel.app',
-    process.env.FRONTEND_URL
-  ].filter(Boolean),
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
