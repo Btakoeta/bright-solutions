@@ -97,6 +97,12 @@ export default function Register() {
         government: 'MUNICIPALITY',
       }
 
+      if (!accountType) {
+        setError('Please select an account type')
+        setSubmitState('idle')
+        return
+      }
+
       await register({
         email: emailSuggestion || email,
         password,
